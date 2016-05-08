@@ -12,38 +12,23 @@ var app = express();
 var moment = require('moment');
 
 var validTimestamp = function(str){
-  var strArr = str.split('');
-  return strArr.every(function(n){
-    console.log(n);
-    return parseInt(n) == n ;
-
+  return str.split('').every(function(n){
+    return parseInt(n) == n;
   });
-}
+};
 
 var processInput = function(reqUrl){
   console.log(typeof reqUrl);
   var arg = decodeURI(reqUrl.substr(1));
-
-  console.log(validTimestamp(arg));
-  var convertedInt = parseInt(arg);
   var momentObj = moment(arg);
   var responseDate = {
     "unix": null,
     "natural": null
   };
 
-  console.log('pre if else');
-  console.log(arg);
-  console.log(convertedInt);
-  console.log(momentObj);
-  console.log(responseDate);
   if (arg == 'now') momentObj = moment();
-  console.log('*******');
-  console.log(responseDate.unix);
-  console.log('*******');
-  console.log(arg);
+
   if(validTimestamp(arg)){
-    console.log('input.converted isInteger');
     //responseDate.url = input;
     responseDate.unix = parseInt(arg);
     responseDate.natural = moment(responseDate.unix*1000).format('LL');
@@ -51,8 +36,8 @@ var processInput = function(reqUrl){
   else if (momentObj.isValid()){
   responseDate.natural = momentObj.format('LL');
   responseDate.unix = momentObj.unix();
-
   }
+
   return responseDate;
 };
 
@@ -74,12 +59,7 @@ app.get('*', function(req, res){
   var myDate = Date.now();
   myDate.unix = myDate;
   res.json(processInput(req.url));
-  console.log(req.url)
-
 });
-
-
-//hello
 
 
 // catch 404 and forward to error handler
